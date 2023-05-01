@@ -10,7 +10,7 @@ from rest_framework.response import Response
 
 from accounts.models import Author
 from .models import Post, Comment, Status, Category
-from .permissions import IsStaffOrOwnerPermission, StatusOrReadOnlyPermission
+from .permissions import IsStaffOrOwnerPermission, StatusOrReadOnlyPermission, CategoryPermission
 from .serializers import PostSerializer, CommentSerializer, StatusSerializer, CategorySerializer
 
 bot = telebot.TeleBot(os.environ.get('TOKEN'), parse_mode=None)
@@ -31,7 +31,7 @@ class CategoryViewSet(generics.ListCreateAPIView):
     """
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    permission_classes = [IsStaffOrOwnerPermission, ]
+    permission_classes = [CategoryPermission, ]
 
 
 class CategoryRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
@@ -40,7 +40,7 @@ class CategoryRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     """
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    permission_classes = [IsStaffOrOwnerPermission, ]
+    permission_classes = [CategoryPermission, ]
 
 
 
