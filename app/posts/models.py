@@ -9,7 +9,7 @@ class Category(models.Model):
         return self.name
 
 class Post(models.Model):
-    title = models.DateField(max_length=255)
+    title = models.CharField(max_length=255)
     text = models.TextField()
     publication_date = models.DateTimeField(auto_now_add=True)
     image = models.ImageField()
