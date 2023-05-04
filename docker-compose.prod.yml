@@ -10,7 +10,6 @@ services:
       - "80:80"
     depends_on:
       - web
-
   web:
     build:
       context: ./app
@@ -19,13 +18,12 @@ services:
     volumes:
       - static_volume:/home/app/web/staticfiles
       - media_volume:/home/app/web/media
-    ports:
-      - "8000:8000"
+    expose:
+      - "8000"
     env_file:
       - ./.env.prod
     depends_on:
       - db
-
   db:
     image: postgres:15.1-alpine3.17
     ports:
