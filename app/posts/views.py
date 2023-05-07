@@ -3,6 +3,7 @@ from rest_framework import generics, viewsets, status, request
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAdminUser
+from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 
 import telebot
 import os
@@ -31,6 +32,7 @@ class CategoryViewSet(generics.ListCreateAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     permission_classes = [CategoryPermission, ]
+    authentication_classes = [SessionAuthentication, TokenAuthentication, ]
 
 
 class CategoryRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
@@ -40,6 +42,7 @@ class CategoryRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     permission_classes = [CategoryPermission, ]
+    authentication_classes = [SessionAuthentication, TokenAuthentication, ]
 
 
 
@@ -50,6 +53,7 @@ class PostViewSet(generics.ListCreateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     permission_classes = [IsStaffOrOwnerPermission, ]
+    authentication_classes = [SessionAuthentication, TokenAuthentication, ]
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_fields = ['title', 'publication_date']
     search_fields = ['title', 'publication_date']
@@ -78,6 +82,7 @@ class PostRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     permission_classes = [IsStaffOrOwnerPermission, ]
+    authentication_classes = [SessionAuthentication, TokenAuthentication, ]
 
 
 class CommentListCreateAPIView(generics.ListCreateAPIView):
@@ -87,6 +92,7 @@ class CommentListCreateAPIView(generics.ListCreateAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
     permission_classes = [IsStaffOrOwnerPermission, ]
+    authentication_classes = [SessionAuthentication, TokenAuthentication, ]
     pagination_class = PostPagePagination
 
     def get_queryset(self):
@@ -106,6 +112,7 @@ class CommentRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
     permission_classes = [IsStaffOrOwnerPermission, ]
+    authentication_classes = [SessionAuthentication, TokenAuthentication, ]
 
     def get_queryset(self):
         return super().get_queryset().filter(post_id=self.kwargs.get('post_id'))
@@ -124,6 +131,8 @@ class StatusListCreateAPIView(generics.ListCreateAPIView):
     queryset = Status.objects.all()
     serializer_class = StatusSerializer
     permission_classes = [StatusOrReadOnlyPermission, ]
+    authentication_classes = [SessionAuthentication, TokenAuthentication, ]
+
 
     def get_queryset(self):
         return super().get_queryset().filter(post_id=self.kwargs.get('post_id'))
@@ -142,6 +151,8 @@ class StatusRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Status.objects.all()
     serializer_class = StatusSerializer
     permission_classes = [StatusOrReadOnlyPermission, ]
+    authentication_classes = [SessionAuthentication, TokenAuthentication, ]
+
 
     def get_queryset(self):
         return super().get_queryset().filter(post_id=self.kwargs.get('post_id'))
