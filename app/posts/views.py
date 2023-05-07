@@ -13,7 +13,6 @@ from .models import Post, Comment, Status, Category
 from .permissions import IsStaffOrOwnerPermission, StatusOrReadOnlyPermission, CategoryPermission
 from .serializers import PostSerializer, CommentSerializer, StatusSerializer, CategorySerializer
 
-bot = telebot.TeleBot(os.environ.get('TOKEN'), parse_mode=None)
 
 
 class PostPagePagination(PageNumberPagination):
@@ -66,7 +65,6 @@ class PostViewSet(generics.ListCreateAPIView):
             serializer.save(author=self.request.user.author)
             try:
                 author = Author.objects.get(user=self.request.user)
-                bot.send_message(author.telegram_chat_id, f' Пост был создан!')
             except:
                 pass
             return Response(serializer.data, status=status.HTTP_201_CREATED)

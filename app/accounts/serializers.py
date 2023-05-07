@@ -16,9 +16,6 @@ class AuthorRegisterSerializer(serializers.ModelSerializer):
         read_only_fields = ['user']
 
     def validate(self, data):
-        if not data['telegram_chat_id'].isdigit():
-            raise serializers.ValidationError('В телеграм ID должны быть только цифры')
-
         if data['password'].isdigit():
             raise serializers.ValidationError('В пароле должны быть буквы')
 
@@ -42,7 +39,6 @@ class AuthorRegisterSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(f'Не удалось создать пользователя. {e}')
         else:
             author = Author.objects.create(
-                telegram_chat_id=validated_data['telegram_chat_id'],
                 user=user, photo=validated_data['photo']
             )
             return author
